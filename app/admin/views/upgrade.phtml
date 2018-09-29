@@ -1,0 +1,56 @@
+<?php if (!empty($errors)) : ?>
+<p class="error">
+    <?php echo implode("<br />", $errors); ?>
+</p>
+<br />
+<?php endif; ?>
+
+<?php if ($upgradeStarted || $upgradeAvailable) : ?>
+<p>
+    <strong><span style="color: #EF0000;">ATTENTION :</span>
+    avant de lancer la mise à jour automatique,
+    merci d'effectuer une sauvegarde de vos données actuelles.</strong>
+</p>
+<?php endif; ?>
+
+<?php if ($upgradeStarted) : ?>
+
+<form action="" method="post">
+    <p>
+        Cliquer sur "Mettre à jour" afin de terminer la mise à jour.
+    </p>
+    <p>
+        <input type="hidden" name="upgrade" value="1" />
+        <input type="submit" value="Mettre à jour" />
+    </p>
+</form>
+
+<?php elseif ($upgradeAvailable) : ?>
+<h2>Une mise à jour est disponible</h2>
+<p>
+    Vous utilisez actuellement la version <strong><?php echo APPLICATION_VERSION; ?></strong>.
+    La version <strong><?php echo $latestVersion; ?></strong> est disponible.
+</p>
+<?php if ($allowUpdate) : ?>
+<form action="" method="post">
+    <p>
+        <input type="hidden" name="upgrade" value="1" />
+        <input type="submit" value="Mettre à jour" />
+    </p>
+</form>
+<?php endif; ?>
+
+<?php elseif (isset($timeChecked)) : ?>
+<p><strong>Vous utilisez déjà la dernière version.</strong></p>
+<form action="" method="post">
+    <?php if (!empty($timeChecked)) : ?>
+    <p>
+        Dernière vérification effectuée le <?php echo date("d/m/Y à H:i", $timeChecked); ?>
+    </p>
+    <?php endif; ?>
+    <p>
+        <input type="hidden" name="force_check" value="1" />
+        <input type="submit" value="Vérifier à nouveau" />
+    </p>
+</form>
+<?php endif; ?>
